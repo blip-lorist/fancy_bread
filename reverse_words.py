@@ -14,9 +14,12 @@ def reverse_words(message):
             space_count+=1
 
     word_count = space_count + 1
-    midpoint_word_count = int(math.ceil(word_count/2))
+    midpoint_word_count = int(math.ceil(word_count/2.0))
 
-    if midpoint_word_count % 2 == 0:
+    if word_count == 2:
+        midpoint_word_count = word_count
+
+    if word_count > 3 and word_count % 2 == 0:
         midpoint_word_count += 1
 
     last_idx = len(message) - 1
@@ -59,6 +62,7 @@ def reverse_words(message):
         # Save right word
         right_word = message[right_word_start:(right_word_end + 1)]
 
+
         # delete
         del message[right_word_start:(right_word_end + 1)]
         del message[left_word_start:left_word_end]
@@ -72,6 +76,7 @@ def reverse_words(message):
         right_word_last_idx = len(right_word) - 1
         for right_idx in range(right_word_last_idx, -1, -1):
             message.insert(left_word_start, right_word[right_idx])
+
 
     pass
 
@@ -108,6 +113,13 @@ class Test(unittest.TestCase):
         reverse_words(message)
         expected = list('chocolate bundt cake is yummy')
         self.assertEqual(message, expected)
+
+    def test_even_num_multple_words(self):
+        message = list('yummy is cake bundt chocolate yay')
+        reverse_words(message)
+        expected = list('yay chocolate bundt cake is yummy')
+        self.assertEqual(message, expected)
+
 
     def test_empty_string(self):
         message = list('')
